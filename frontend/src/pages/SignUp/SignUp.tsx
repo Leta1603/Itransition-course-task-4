@@ -7,6 +7,8 @@ import { TextField } from "@mui/material";
 import styles from "./SignUp.module.scss";
 import { useDispatch } from "react-redux";
 import { signUpUser } from "../../redux/reducers/userSlice.ts";
+import { RoutesList } from "../Router.tsx";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const [fullName, setFullName] = useState("");
@@ -29,6 +31,7 @@ const SignUp = () => {
   });
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   function calculateHMAC(key: any, password: any) {
     return CryptoJS.HmacSHA256(password, key).toString(CryptoJS.enc.Hex);
@@ -159,13 +162,15 @@ const SignUp = () => {
       isTouched.fullName,
       isTouched.email,
       isError.fullName,
-      isError.fullName,
+      isError.email,
       isError.confirm,
       isError.passwordField,
     ],
   );
 
-  const onSignInClick = () => {};
+  const onSignInClick = () => {
+    navigate(RoutesList.SignIn);
+  };
 
   const clearInputs = () => {
     setFullName("");
@@ -200,13 +205,20 @@ const SignUp = () => {
       password: hmac,
     };
 
-    dispatch(signUpUser({ data, callback: () => {} }));
+    dispatch(
+      signUpUser({
+        data,
+        callback: () => {
+          navigate(RoutesList.SignIn);
+        },
+      }),
+    );
     clearInputs();
   };
 
   return (
     <FormContainer
-      title={"Sign Up"}
+      title={"Sign up"}
       btnTitle={"Sign Up"}
       onSubmit={onSubmitClick}
       additionalInfo={

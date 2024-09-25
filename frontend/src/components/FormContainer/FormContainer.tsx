@@ -21,8 +21,8 @@ const FormContainer: FC<FormContainerType> = ({
   isSubmitDisabled,
 }) => {
   return (
-    <div>
-      <h1>{title}</h1>
+    <div className={styles.formContainer}>
+      <h1 className={styles.title}>{title}</h1>
       <div className={styles.form}>{children}</div>
       <Button
         variant="contained"

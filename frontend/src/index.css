@@ -3,10 +3,14 @@
   font-weight: 400;
 }
 
-body {
+* {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-height: 100vh;
+  padding: 0;
   box-sizing: border-box;
+  list-style: none;
+  text-decoration: none;
+}
+
+body {
+  min-height: 100vh;
 }

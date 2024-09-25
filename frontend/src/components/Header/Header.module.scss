@@ -1,0 +1,33 @@
+.page {
+  min-height: 100vh;
+  position: relative;
+}
+
+.header {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 5;
+  box-shadow: 0 12px 6px -1px rgba(12, 43, 73, 0.39);
+  padding: 10px 0;
+}
+
+.headerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  gap: 20px;
+  max-width: 1170px;
+  padding: 0 15px;
+  font-size: 17px;
+}
+
+.container {
+  max-width: 1170px;
+  padding: 50px 15px 20px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

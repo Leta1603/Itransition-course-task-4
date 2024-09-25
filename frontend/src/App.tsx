@@ -1,15 +1,11 @@
-import {ToastContainer} from "react-toastify/dist/components/ToastContainer";
 import "react-toastify/dist/ReactToastify.css";
-import "./App.css";
 
-import SignUp from "./pages/SignUp/SignUp.tsx";
+import Router from "./pages/Router.tsx";
 
 function App() {
-
   return (
     <>
-      <SignUp />
-      <ToastContainer />
+      <Router />
     </>
   );
 }
