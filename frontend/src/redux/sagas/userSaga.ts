@@ -5,7 +5,7 @@ import { ApiResponse } from "apisauce";
 import API from "../../utils/api/index.ts";
 import { UserInfoPayload, UserInfoResponse } from "../@type.ts";
 import { PayloadAction } from "@reduxjs/toolkit";
-import { toast } from "react-toastify";
+import { toast } from "react-toastify/dist/core";
 
 function* getUsersWorker() {
   const response: ApiResponse<UserInfoResponse[]> = yield call(API.getUsers);
@@ -20,6 +20,7 @@ function* signUpUserWorker(action: PayloadAction<UserInfoPayload>) {
   const { data, callback } = action.payload;
   const response: ApiResponse<undefined> = yield call(API.signUpUser, data);
   if (response.ok) {
+    // @ts-ignore
     if (response.data.message) {
       toast.error("User already exists", { delay: 200 });
     } else {

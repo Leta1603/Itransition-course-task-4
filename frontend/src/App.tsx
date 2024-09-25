@@ -1,4 +1,4 @@
-import {ToastContainer} from "react-toastify";
+import {ToastContainer} from "react-toastify/dist/components/ToastContainer";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
