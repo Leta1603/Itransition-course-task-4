@@ -33,7 +33,7 @@ const SignUp = () => {
   const dispatch = useDispatch();
 
   function calculateHMAC(key: any, password: any) {
-    CryptoJS.HmacSHA256(password, key).toString(CryptoJS.enc.Hex);
+    return CryptoJS.HmacSHA256(password, key).toString(CryptoJS.enc.Hex);
   }
   function generateKey() {
     const array = new Uint8Array(32); // 32 байта = 256 бит
