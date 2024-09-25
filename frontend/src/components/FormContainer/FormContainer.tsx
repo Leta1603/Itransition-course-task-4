@@ -32,7 +32,7 @@ const FormContainer: FC<FormContainerType> = ({
       >
         {btnTitle}
       </Button>
-      <div>{additionalInfo}</div>
+      <div className={styles.additionalInfo}>{additionalInfo}</div>
     </div>
   );
 };

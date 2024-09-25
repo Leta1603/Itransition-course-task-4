@@ -6,15 +6,13 @@ import { TextField } from "@mui/material";
 
 import styles from "./SignUp.module.scss";
 import { useDispatch } from "react-redux";
+import { signUpUser } from "../../redux/reducers/userSlice.ts";
 
 const SignUp = () => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  // const [lastLoginTime, setLastLoginTime] = useState("");
-  // const [registrationTime, setRegistrationTime] = useState("");
-  // const [status, setStatus] = useState("");
 
   const [isError, setError] = useState({
     fullName: "",
@@ -69,7 +67,6 @@ const SignUp = () => {
         setError((prevState) => ({
           ...prevState,
           fullName: "Full name length should be more than 1 characters",
-          // fullName: "Username already exists",
         }));
       } else {
         setError((prevState) => ({
@@ -93,38 +90,38 @@ const SignUp = () => {
           email: "",
         }));
       }
+    }
 
-      if (isTouched.passwordField) {
-        if (password.length < 1) {
-          setError((prevState) => ({
-            ...prevState,
-            passwordField: "Password length should be more than 1 characters",
-          }));
-        } else {
-          setError((prevState) => ({
-            ...prevState,
-            passwordField: "",
-          }));
-        }
+    if (isTouched.passwordField) {
+      if (password.length < 1) {
+        setError((prevState) => ({
+          ...prevState,
+          passwordField: "Password length should be more than 1 characters",
+        }));
+      } else {
+        setError((prevState) => ({
+          ...prevState,
+          passwordField: "",
+        }));
       }
+    }
 
-      if (isTouched.confirm) {
-        if (confirmPassword.length < 1) {
-          setError((prevState) => ({
-            ...prevState,
-            confirm: "Confirm password length should be more than 1 characters",
-          }));
-        } else if (password !== confirmPassword) {
-          setError((prevState) => ({
-            ...prevState,
-            confirm: "Passwords must match",
-          }));
-        } else {
-          setError((prevState) => ({
-            ...prevState,
-            confirm: "",
-          }));
-        }
+    if (isTouched.confirm) {
+      if (confirmPassword.length < 1) {
+        setError((prevState) => ({
+          ...prevState,
+          confirm: "Confirm password length should be more than 1 characters",
+        }));
+      } else if (password !== confirmPassword) {
+        setError((prevState) => ({
+          ...prevState,
+          confirm: "Passwords must match",
+        }));
+      } else {
+        setError((prevState) => ({
+          ...prevState,
+          confirm: "",
+        }));
       }
     }
   }, [
@@ -169,6 +166,26 @@ const SignUp = () => {
   );
 
   const onSignInClick = () => {};
+
+  const clearInputs = () => {
+    setFullName("");
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+    setTouched({
+      fullName: false,
+      email: false,
+      passwordField: false,
+      confirm: false,
+    });
+    setError({
+      fullName: "",
+      email: "",
+      passwordField: "",
+      confirm: "",
+    });
+  };
+
   const onSubmitClick = () => {
     const registrationTime = moment().format("MMMM Do YYYY, h:mm:ss a");
     const salt = generateKey();
@@ -177,11 +194,14 @@ const SignUp = () => {
       fullName,
       email,
       registrationTime,
-      lastLoginTime: null,
+      lastLoginTime: "",
       status: "Active",
       salt,
       password: hmac,
     };
+
+    dispatch(signUpUser({ data, callback: () => {} }));
+    clearInputs();
   };
 
   return (
@@ -225,6 +245,7 @@ const SignUp = () => {
         onChange={onChangePassword}
         fullWidth
         helperText={isError.passwordField}
+        type="password"
       />
       <TextField
         error={!!isError.confirm}
@@ -234,6 +255,7 @@ const SignUp = () => {
         onChange={onChangePasswordConfirm}
         fullWidth
         helperText={isError.confirm}
+        type="password"
       />
     </FormContainer>
   );

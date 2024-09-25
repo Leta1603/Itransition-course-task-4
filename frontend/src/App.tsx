@@ -1,12 +1,15 @@
+import {ToastContainer} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
-import Toolbar from "./components/Toolbar/Toolbar.tsx";
-import Table from "./components/Table";
+
+import SignUp from "./pages/SignUp/SignUp.tsx";
 
 function App() {
+
   return (
     <>
-      <Toolbar />
-      <Table />
+      <SignUp />
+      <ToastContainer />
     </>
   );
 }
