@@ -30,10 +30,29 @@ app.get("/users", (req, res) => {
 });
 
 app.post("/users", (req, res) => {
-  const query = "INSERT INTO users (`name`, `email`) VALUES (?)";
-  const values = [req.body.name, req.body.email];
-  db.query(query, [values], (err, data) => {
+  const checkUserQuery = "SELECT * FROM users WHERE email = ?";
+  const insertQuery =
+    "INSERT INTO users (`fullName`, `email`,`lastLoginTime`, `registrationTime`, `status`, `salt`, `password`) VALUES (?)";
+  const values = [
+    req.body.fullName,
+    req.body.email,
+    req.body.lastLoginTime,
+    req.body.registrationTime,
+    req.body.status,
+    req.body.salt,
+    req.body.password,
+  ];
+
+  db.query(checkUserQuery, [req.body.email], (err, existingUser) => {
     if (err) return res.json(err);
-    return res.json(data);
+
+    if (existingUser.length > 0) {
+      return res.json({ message: "User already exists" });
+    }
+
+    db.query(insertQuery, [values], (err, data) => {
+      if (err) return res.json(err);
+      return res.json(data);
+    });
   });
 });
