@@ -92,3 +92,21 @@ app.post("/user/login", (req, res) => {
     }
   });
 });
+
+app.patch('/update-status', (req, res) => {
+  const { ids, status } = req.body;
+
+  if (!Array.isArray(ids) || typeof status !== 'string') {
+    return res.status(400).json({ error: 'Invalid input data' });
+  }
+
+  const placeholders = ids.map(() => '?').join(',');
+  const query = `UPDATE users SET status = ? WHERE id IN (${placeholders})`;
+
+  db.query(query, [status, ...ids], (error, results) => {
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+    res.json({ message: 'Status updated successfully', affectedRows: results.affectedRows });
+  });
+});
