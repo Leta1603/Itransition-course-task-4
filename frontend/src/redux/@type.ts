@@ -4,13 +4,21 @@ export type PayloadWithDataAndCallback<Data> = {
   //   функция, котора выполняется, если создание успешно
 };
 
+// id: number;
+// fullName: string;
+// email: string;
+// lastLoginTime: string;
+// registrationTime: string;
+// status: string;
+// salt: string;
+// password: string;
+
 export type UserInfoResponse = {
   id: number;
   fullName: string;
   email: string;
-  lastLoginTime: string;
-  registrationTime: string;
   status: string;
+  lastLoginTime: string;
 };
 
 export type UserInfoRequest = {
@@ -24,3 +32,11 @@ export type UserInfoRequest = {
 };
 
 export type UserInfoPayload = PayloadWithDataAndCallback<UserInfoRequest>;
+
+export type UserSignInData = {
+  email: string;
+  password: string;
+  lastLoginTime: string;
+};
+
+export type UserSignInPayload = PayloadWithDataAndCallback<UserSignInData>;

@@ -1,5 +1,5 @@
 import { create } from "apisauce";
-import { UserInfoRequest } from "../../redux/@type.ts";
+import {UserInfoRequest, UserSignInData} from "../../redux/@type.ts";
 
 const API = create({
   baseURL: "http://localhost:8800",
@@ -10,10 +10,15 @@ const getUsers = () => {
 };
 
 const signUpUser = (data: UserInfoRequest) => {
-  return API.post("/users", data);
+  return API.post("/user/create", data);
+};
+
+const signInUser = (data: UserSignInData) => {
+  return API.post("/user/login", data);
 };
 
 export default {
   getUsers,
   signUpUser,
+  signInUser
 };

@@ -213,6 +213,7 @@ const SignUp = () => {
         },
       }),
     );
+
     clearInputs();
   };
 

@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 import FormContainer from "../../components/FormContainer";
 import { RoutesList } from "../Router.tsx";
 import styles from "./SignIn.module.scss";
+import { useDispatch } from "react-redux";
+import { signInUser } from "../../redux/reducers/userSlice.ts";
+import moment from "moment/moment";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -19,8 +22,24 @@ const SignIn = () => {
     passwordField: false,
   });
 
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
-  const onSubmitClick = () => {};
+  const onSubmitClick = () => {
+    const data = {
+      email,
+      password,
+      lastLoginTime: moment().format("MMMM Do YYYY, h:mm:ss a"),
+    };
+    dispatch(
+      signInUser({
+        data,
+        callback: () => {
+          navigate(RoutesList.Home);
+        },
+      }),
+    );
+  };
 
   const onSignUpClick = () => {
     navigate(RoutesList.SignUp);
