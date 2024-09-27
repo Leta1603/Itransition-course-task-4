@@ -10,7 +10,6 @@ import { UserInfoResponse } from "../../redux/@type.ts";
 
 const Table = () => {
   const users = useSelector(UserSelectors.getUsers);
-  console.log("Users", users);
   const dispatch = useDispatch();
 
   const btnFlag = useSelector(UserSelectors.getBtnFlag);

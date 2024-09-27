@@ -1,6 +1,7 @@
 import { all, takeLatest, call, put } from "redux-saga/effects";
 import {
   changeStatusOfUsers,
+  deleteUsers,
   getUsers,
   setUser,
   setUsers,
@@ -12,6 +13,7 @@ import { ApiResponse } from "apisauce";
 import API from "../../utils/api/index.ts";
 import {
   ChangeStatusPayload,
+  DeleteUsersPayload,
   UserInfoPayload,
   UserInfoResponse,
   UserSignInPayload,
@@ -59,6 +61,8 @@ function* signInUserWorker(action: PayloadAction<UserSignInPayload>) {
     } else {
       toast.error("The user is blocked", { delay: 200 });
     }
+  } else if (response.status === 401) {
+    toast.error("The user is not registered", { delay: 200 });
   } else {
     console.error("Sign in user error", response.problem);
   }
@@ -76,11 +80,22 @@ function* changeStatusOfUsersWorker(
   }
 }
 
+function* deleteUsersWorker(action: PayloadAction<DeleteUsersPayload>) {
+  const { data, callback } = action.payload;
+  const response: ApiResponse<undefined> = yield call(API.deleteUsers, data);
+  if (response.ok) {
+    callback();
+  } else {
+    console.error("Delete users error", response.problem);
+  }
+}
+
 export default function* userSaga() {
   yield all([
     takeLatest(getUsers, getUsersWorker),
     takeLatest(signUpUser, signUpUserWorker),
     takeLatest(signInUser, signInUserWorker),
     takeLatest(changeStatusOfUsers, changeStatusOfUsersWorker),
+    takeLatest(deleteUsers, deleteUsersWorker),
   ]);
 }

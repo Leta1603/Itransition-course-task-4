@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   changeStatusOfUsers,
+  deleteUsers,
   setUser,
   UserSelectors,
 } from "../../redux/reducers/userSlice.ts";
@@ -26,12 +27,12 @@ const Toolbar = () => {
         changeStatusOfUsers({
           data: { ids: selectedIds, status: "Blocked" },
           callback: () => {
-              selectedIds.forEach((id) => {
-                if (userInfo.id === id){
-                    localStorage.setItem("userInfo", JSON.stringify(null));
-                    dispatch(setUser(null));
-                    navigate(RoutesList.SignIn);
-                }
+            selectedIds.forEach((id) => {
+              if (userInfo.id === id) {
+                localStorage.setItem("userInfo", JSON.stringify(null));
+                dispatch(setUser(null));
+                navigate(RoutesList.SignIn);
+              }
             });
           },
         }),
@@ -50,6 +51,26 @@ const Toolbar = () => {
     }
   };
 
+  const onDeleteClick = () => {
+    if (selectedIds.length > 0) {
+      let str = selectedIds.join(",").trim();
+      dispatch(
+        deleteUsers({
+          data: { ids: str },
+          callback: () => {
+            selectedIds.forEach((id) => {
+              if (userInfo.id === id) {
+                localStorage.setItem("userInfo", JSON.stringify(null));
+                dispatch(setUser(null));
+                navigate(RoutesList.SignIn);
+              }
+            });
+          },
+        }),
+      );
+    }
+  };
+
   return (
     <div className={styles.container}>
       <Button
@@ -62,7 +83,7 @@ const Toolbar = () => {
       <Button variant="outlined" onClick={onUnblockClick}>
         <LockOpenIcon />
       </Button>
-      <Button variant="contained" color="error">
+      <Button variant="contained" color="error" onClick={onDeleteClick}>
         <DeleteIcon />
       </Button>
     </div>

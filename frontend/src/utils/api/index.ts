@@ -1,6 +1,7 @@
 import { create } from "apisauce";
 import {
   ChangeStatusData,
+  DeleteUsersData,
   UserInfoRequest,
   UserSignInData,
 } from "../../redux/@type.ts";
@@ -25,9 +26,14 @@ const changeStatus = (data: ChangeStatusData) => {
   return API.patch("/user/update-status", data);
 };
 
+const deleteUsers = (data: DeleteUsersData) => {
+  return API.delete("/users", data);
+};
+
 export default {
   getUsers,
   signUpUser,
   signInUser,
   changeStatus,
+  deleteUsers,
 };

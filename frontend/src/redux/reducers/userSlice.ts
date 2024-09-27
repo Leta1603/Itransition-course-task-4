@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   ChangeStatusPayload,
+  DeleteUsersPayload,
   UserInfoPayload,
   UserInfoResponse,
   UserSignInPayload,
@@ -35,6 +36,7 @@ const userSlice = createSlice({
     },
     signUpUser: (_, __: PayloadAction<UserInfoPayload>) => {},
     signInUser: (_, __: PayloadAction<UserSignInPayload>) => {},
+    deleteUsers: (_, __: PayloadAction<DeleteUsersPayload>) => {},
     setSelectedUsers: (state, action: PayloadAction<GridRowId[]>) => {
       state.selectedUsers = action.payload;
     },
@@ -52,6 +54,7 @@ export const {
   signInUser,
   setSelectedUsers,
   changeStatusOfUsers,
+  deleteUsers,
 } = userSlice.actions;
 
 export const UserSelectors = {

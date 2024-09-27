@@ -48,4 +48,10 @@ export type ChangeStatusData = {
   status: string;
 };
 
+export type DeleteUsersData = {
+  ids: string;
+};
+
 export type ChangeStatusPayload = PayloadWithDataAndCallback<ChangeStatusData>;
+
+export type DeleteUsersPayload = PayloadWithDataAndCallback<DeleteUsersData>;
