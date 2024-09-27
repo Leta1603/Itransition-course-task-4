@@ -93,7 +93,7 @@ app.post("/user/login", (req, res) => {
   });
 });
 
-app.patch('/update-status', (req, res) => {
+app.patch('/user/update-status', (req, res) => {
   const { ids, status } = req.body;
 
   if (!Array.isArray(ids) || typeof status !== 'string') {

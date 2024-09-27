@@ -1,5 +1,9 @@
 import { create } from "apisauce";
-import {UserInfoRequest, UserSignInData} from "../../redux/@type.ts";
+import {
+  ChangeStatusData,
+  UserInfoRequest,
+  UserSignInData,
+} from "../../redux/@type.ts";
 
 const API = create({
   baseURL: "http://localhost:8800",
@@ -17,8 +21,13 @@ const signInUser = (data: UserSignInData) => {
   return API.post("/user/login", data);
 };
 
+const changeStatus = (data: ChangeStatusData) => {
+  return API.patch("/user/update-status", data);
+};
+
 export default {
   getUsers,
   signUpUser,
-  signInUser
+  signInUser,
+  changeStatus,
 };

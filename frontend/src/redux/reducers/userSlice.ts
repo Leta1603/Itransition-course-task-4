@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
+  ChangeStatusPayload,
   UserInfoPayload,
   UserInfoResponse,
   UserSignInPayload,
@@ -11,12 +12,14 @@ type InitialState = {
   users: UserInfoResponse[];
   user: UserInfoResponse | null;
   selectedUsers: GridRowId[];
+  btnFlag: boolean;
 };
 
 const initialState: InitialState = {
   users: [],
   user: null,
   selectedUsers: [],
+  btnFlag: false,
 };
 
 const userSlice = createSlice({
@@ -35,6 +38,9 @@ const userSlice = createSlice({
     setSelectedUsers: (state, action: PayloadAction<GridRowId[]>) => {
       state.selectedUsers = action.payload;
     },
+    changeStatusOfUsers: (state, __: PayloadAction<ChangeStatusPayload>) => {
+      state.btnFlag = !state.btnFlag;
+    },
   },
 });
 
@@ -45,11 +51,13 @@ export const {
   setUser,
   signInUser,
   setSelectedUsers,
+  changeStatusOfUsers,
 } = userSlice.actions;
 
 export const UserSelectors = {
   getUsers: (state: RootState) => state.userReducer.users,
   getSelectedUsers: (state: RootState) => state.userReducer.selectedUsers,
+  getBtnFlag: (state: RootState) => state.userReducer.btnFlag,
 };
 
 export default userSlice.reducer;

@@ -1,5 +1,6 @@
 import { all, takeLatest, call, put } from "redux-saga/effects";
 import {
+  changeStatusOfUsers,
   getUsers,
   setUser,
   setUsers,
@@ -10,6 +11,7 @@ import { ApiResponse } from "apisauce";
 
 import API from "../../utils/api/index.ts";
 import {
+  ChangeStatusPayload,
   UserInfoPayload,
   UserInfoResponse,
   UserSignInPayload,
@@ -58,10 +60,23 @@ function* signInUserWorker(action: PayloadAction<UserSignInPayload>) {
   }
 }
 
+function* changeStatusOfUsersWorker(
+  action: PayloadAction<ChangeStatusPayload>,
+) {
+  const { data, callback } = action.payload;
+  const response: ApiResponse<undefined> = yield call(API.changeStatus, data);
+  if (response.ok) {
+    callback();
+  } else {
+    console.error("Change status of users error", response.problem);
+  }
+}
+
 export default function* userSaga() {
   yield all([
     takeLatest(getUsers, getUsersWorker),
     takeLatest(signUpUser, signUpUserWorker),
     takeLatest(signInUser, signInUserWorker),
+    takeLatest(changeStatusOfUsers, changeStatusOfUsersWorker),
   ]);
 }

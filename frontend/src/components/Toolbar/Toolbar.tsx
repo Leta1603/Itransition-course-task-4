@@ -2,15 +2,52 @@ import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  changeStatusOfUsers,
+  setUser,
+  UserSelectors,
+} from "../../redux/reducers/userSlice.ts";
+import { RoutesList } from "../../pages/Router.tsx";
+import { useUserInfo } from "../../hooks";
 
 import styles from "./toolbar.module.scss";
-import { useSelector } from "react-redux";
-import { UserSelectors } from "../../redux/reducers/userSlice.ts";
 
 const Toolbar = () => {
-  const selectedUsers = useSelector(UserSelectors.getSelectedUsers);
+  const selectedIds = useSelector(UserSelectors.getSelectedUsers);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const userInfo = useUserInfo().getUserInfo();
+
   const onBlockClick = () => {
-    console.log(selectedUsers);
+    if (selectedIds.length > 0) {
+      dispatch(
+        changeStatusOfUsers({
+          data: { ids: selectedIds, status: "Blocked" },
+          callback: () => {
+              selectedIds.forEach((id) => {
+                if (userInfo.id === id){
+                    localStorage.setItem("userInfo", JSON.stringify(null));
+                    dispatch(setUser(null));
+                    navigate(RoutesList.SignIn);
+                }
+            });
+          },
+        }),
+      );
+    }
+  };
+
+  const onUnblockClick = () => {
+    if (selectedIds.length > 0) {
+      dispatch(
+        changeStatusOfUsers({
+          data: { ids: selectedIds, status: "Active" },
+          callback: () => {},
+        }),
+      );
+    }
   };
 
   return (
@@ -22,7 +59,7 @@ const Toolbar = () => {
       >
         Block
       </Button>
-      <Button variant="outlined">
+      <Button variant="outlined" onClick={onUnblockClick}>
         <LockOpenIcon />
       </Button>
       <Button variant="contained" color="error">

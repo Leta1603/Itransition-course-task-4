@@ -1,3 +1,5 @@
+import { GridRowId } from "@mui/x-data-grid";
+
 export type PayloadWithDataAndCallback<Data> = {
   data: Data;
   callback: () => void;
@@ -14,11 +16,11 @@ export type PayloadWithDataAndCallback<Data> = {
 // password: string;
 
 export type UserInfoResponse = {
-  id: number;
-  fullName: string;
-  email: string;
-  status: string;
-  lastLoginTime: string;
+  id?: number;
+  fullName?: string;
+  email?: string;
+  status?: string;
+  lastLoginTime?: string;
 };
 
 export type UserInfoRequest = {
@@ -40,3 +42,10 @@ export type UserSignInData = {
 };
 
 export type UserSignInPayload = PayloadWithDataAndCallback<UserSignInData>;
+
+export type ChangeStatusData = {
+  ids: GridRowId[];
+  status: string;
+};
+
+export type ChangeStatusPayload = PayloadWithDataAndCallback<ChangeStatusData>;
