@@ -93,20 +93,45 @@ app.post("/user/login", (req, res) => {
   });
 });
 
-app.patch('/user/update-status', (req, res) => {
+app.patch("/user/update-status", (req, res) => {
   const { ids, status } = req.body;
 
-  if (!Array.isArray(ids) || typeof status !== 'string') {
-    return res.status(400).json({ error: 'Invalid input data' });
+  if (!Array.isArray(ids) || typeof status !== "string") {
+    return res.status(400).json({ error: "Invalid input data" });
   }
 
-  const placeholders = ids.map(() => '?').join(',');
+  const placeholders = ids.map(() => "?").join(",");
   const query = `UPDATE users SET status = ? WHERE id IN (${placeholders})`;
 
   db.query(query, [status, ...ids], (error, results) => {
     if (error) {
       return res.status(500).json({ error: error.message });
     }
-    res.json({ message: 'Status updated successfully', affectedRows: results.affectedRows });
+    res.json({
+      message: "Status updated successfully",
+      affectedRows: results.affectedRows,
+    });
+  });
+});
+
+app.delete("/users", (req, res) => {
+  const ids = req.query.ids ? req.query.ids.split(",") : [];
+
+  if (ids.length === 0) {
+    return res.status(400).json({ message: "Invalid or missing id parameter" });
+  }
+
+  const placeholders = ids.map(() => "?").join(",");
+
+  const query = `DELETE FROM users WHERE id IN (${placeholders})`;
+
+  db.query(query, ids, (err, result) => {
+    if (err) {
+      return res.status(500).json({ message: "Database error" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Users deleted", affectedRows: result.affectedRows });
   });
 });
