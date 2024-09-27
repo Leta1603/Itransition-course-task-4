@@ -81,6 +81,7 @@ app.post("/user/login", (req, res) => {
             fullName: user.fullName,
             email: user.email,
             lastLoginTime: user.lastLoginTime,
+            registrationTime: user.registrationTime,
             status: user.status,
           });
         });

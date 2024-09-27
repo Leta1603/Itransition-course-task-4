@@ -16,11 +16,12 @@ export type PayloadWithDataAndCallback<Data> = {
 // password: string;
 
 export type UserInfoResponse = {
-  id?: number;
-  fullName?: string;
-  email?: string;
-  status?: string;
-  lastLoginTime?: string;
+  id: number;
+  fullName: string;
+  email: string;
+  status: string;
+  lastLoginTime: string;
+  registrationTime: string;
 };
 
 export type UserInfoRequest = {

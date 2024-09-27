@@ -39,6 +39,7 @@ const Table = () => {
           email: user.email,
           status: user.status,
           lastLoginTime: user.lastLoginTime,
+          registrationTime: user.registrationTime,
         });
       });
       setRows(usersArray);
@@ -55,23 +56,16 @@ const Table = () => {
       flex: 1,
     },
     {
+      field: "registrationTime",
+      headerName: "Registration time",
+      flex: 1,
+    },
+    {
       field: "status",
       headerName: "Status",
       width: 100,
     },
   ];
-
-  // const rows: UserInfoResponse[] = [];
-
-  // users.forEach((user) => {
-  //   rows.push({
-  //     id: user.id,
-  //     fullName: user.fullName,
-  //     email: user.email,
-  //     lastLoginTime: user.lastLoginTime,
-  //     status: user.status,
-  //   });
-  // });
 
   const paginationModel = { page: 0, pageSize: 5 };
   return (
