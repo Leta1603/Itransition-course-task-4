@@ -52,9 +52,13 @@ function* signInUserWorker(action: PayloadAction<UserSignInPayload>) {
     data,
   );
   if (response.ok && response.data) {
-    yield put(setUser(response.data));
-    localStorage.setItem("userInfo", JSON.stringify(response.data));
-    callback();
+    if (response.data.status === "Active") {
+      yield put(setUser(response.data));
+      localStorage.setItem("userInfo", JSON.stringify(response.data));
+      callback();
+    } else {
+      toast.error("The user is blocked", { delay: 200 });
+    }
   } else {
     console.error("Sign in user error", response.problem);
   }

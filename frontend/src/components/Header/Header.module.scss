@@ -18,12 +18,14 @@
   justify-content: right;
   gap: 20px;
   max-width: 1170px;
+  margin: 0 auto;
   padding: 0 15px;
   font-size: 17px;
 }
 
 .container {
   max-width: 1170px;
+  overflow: hidden;
   padding: 50px 15px 20px;
   margin: 0 auto;
   min-height: 100dvh;
