@@ -7,14 +7,49 @@ const app = express();
 
 const PORT = 8800;
 
-app.use(cors());
-
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "Violetta",
-  database: "itransition",
 });
+
+// Создаем базу данных, если она не существует
+db.query("CREATE DATABASE IF NOT EXISTS itransition", (err) => {
+  if (err) {
+    console.error("Error creating the database:", err);
+    return;
+  }
+  // Выбираем базу данных для дальнейшей работы
+  db.changeUser({ database: "itransition" }, (err) => {
+    if (err) {
+      console.error("Error when selecting a database:", err);
+      return;
+    }
+
+    const createUsersTableQuery = `
+      CREATE TABLE IF NOT EXISTS users (
+         \`id\` int NOT NULL AUTO_INCREMENT,
+        \`fullName\` varchar(45) NOT NULL,
+        \`email\` varchar(45) NOT NULL,
+        \`lastLoginTime\` varchar(45) DEFAULT NULL,
+        \`registrationTime\` varchar(45) NOT NULL,
+        \`status\` varchar(45) NOT NULL,
+        \`salt\` varchar(64) NOT NULL,
+        \`password\` varchar(64) NOT NULL,
+        PRIMARY KEY (\`id\`),
+        UNIQUE KEY \`id_UNIQUE\` (\`id\`)
+      );
+    `;
+
+    db.query(createUsersTableQuery, (err) => {
+      if (err) {
+        console.error("Error creating the users table:", err);
+      }
+    });
+  });
+});
+
+app.use(cors());
 
 app.use(express.json());
 
