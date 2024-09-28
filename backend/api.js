@@ -54,9 +54,9 @@ api.use(cors());
 
 api.use(express.json());
 
-api.listen(PORT, (err) => {
-  err ? console.log(err) : console.log(`Listening port ${PORT}`);
-});
+// api.listen(PORT, (err) => {
+//   err ? console.log(err) : console.log(`Listening port ${PORT}`);
+// });
 
 api.get("/users", (req, res) => {
   const query = "SELECT * FROM users";
