@@ -2,8 +2,9 @@ import express from "express";
 import mysql from "mysql";
 import cors from "cors";
 import crypto from "crypto";
+import serverless from "serverless-http";
 
-const app = express();
+const api = express();
 
 const PORT = 8800;
 
@@ -49,15 +50,15 @@ db.query("CREATE DATABASE IF NOT EXISTS itransition", (err) => {
   });
 });
 
-app.use(cors());
+api.use(cors());
 
-app.use(express.json());
+api.use(express.json());
 
-app.listen(PORT, (err) => {
+api.listen(PORT, (err) => {
   err ? console.log(err) : console.log(`Listening port ${PORT}`);
 });
 
-app.get("/users", (req, res) => {
+api.get("/users", (req, res) => {
   const query = "SELECT * FROM users";
   db.query(query, (err, data) => {
     if (err) return res.json(err);
@@ -65,7 +66,7 @@ app.get("/users", (req, res) => {
   });
 });
 
-app.post("/user/create", (req, res) => {
+api.post("/user/create", (req, res) => {
   const checkUserQuery = "SELECT * FROM users WHERE email = ?";
   const insertQuery =
     "INSERT INTO users (`fullName`, `email`,`lastLoginTime`, `registrationTime`, `status`, `salt`, `password`) VALUES (?)";
@@ -97,7 +98,7 @@ export function calculateHMAC(key, password) {
   return crypto.createHmac("SHA256", key).update(password).digest("hex");
 }
 
-app.post("/user/login", (req, res) => {
+api.post("/user/login", (req, res) => {
   const { email, password, lastLoginTime } = req.body;
   const query = "SELECT * FROM users WHERE email = ?";
   db.query(query, [email], (err, data) => {
@@ -129,7 +130,7 @@ app.post("/user/login", (req, res) => {
   });
 });
 
-app.patch("/user/update-status", (req, res) => {
+api.patch("/user/update-status", (req, res) => {
   const { ids, status } = req.body;
 
   if (!Array.isArray(ids) || typeof status !== "string") {
@@ -150,7 +151,7 @@ app.patch("/user/update-status", (req, res) => {
   });
 });
 
-app.delete("/users", (req, res) => {
+api.delete("/users", (req, res) => {
   const ids = req.query.ids ? req.query.ids.split(",") : [];
 
   if (ids.length === 0) {
@@ -171,3 +172,5 @@ app.delete("/users", (req, res) => {
       .json({ message: "Users deleted", affectedRows: result.affectedRows });
   });
 });
+
+export const handler = serverless(api);
