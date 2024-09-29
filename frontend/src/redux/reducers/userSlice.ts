@@ -40,7 +40,9 @@ const userSlice = createSlice({
     },
     signUpUser: (_, __: PayloadAction<UserInfoPayload>) => {},
     signInUser: (_, __: PayloadAction<UserSignInPayload>) => {},
-    deleteUsers: (_, __: PayloadAction<DeleteUsersPayload>) => {},
+    deleteUsers: (state, __: PayloadAction<DeleteUsersPayload>) => {
+      state.btnFlag = !state.btnFlag;
+    },
     setSelectedUsers: (state, action: PayloadAction<GridRowId[]>) => {
       state.selectedUsers = action.payload;
     },
