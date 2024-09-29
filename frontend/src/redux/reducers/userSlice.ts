@@ -8,19 +8,22 @@ import {
 } from "../@type.ts";
 import { RootState } from "../store.ts";
 import { GridRowId } from "@mui/x-data-grid";
+import { useUserInfo } from "../../hooks";
 
 type InitialState = {
   users: UserInfoResponse[];
   user: UserInfoResponse | null;
   selectedUsers: GridRowId[];
   btnFlag: boolean;
+  isUserLoggedIn: boolean;
 };
 
 const initialState: InitialState = {
   users: [],
-  user: null,
+  user: useUserInfo().getUserInfo(),
   selectedUsers: [],
   btnFlag: false,
+  isUserLoggedIn: !!useUserInfo().getUserInfo(),
 };
 
 const userSlice = createSlice({
@@ -33,6 +36,7 @@ const userSlice = createSlice({
     getUsers: (_, __: PayloadAction<undefined>) => {},
     setUser: (state, action: PayloadAction<UserInfoResponse | null>) => {
       state.user = action.payload;
+      state.isUserLoggedIn = !!action.payload;
     },
     signUpUser: (_, __: PayloadAction<UserInfoPayload>) => {},
     signInUser: (_, __: PayloadAction<UserSignInPayload>) => {},
@@ -59,6 +63,7 @@ export const {
 
 export const UserSelectors = {
   getUsers: (state: RootState) => state.userReducer.users,
+  getUserIsLoggedIn: (state: RootState) => state.userReducer.isUserLoggedIn,
   getSelectedUsers: (state: RootState) => state.userReducer.selectedUsers,
   getBtnFlag: (state: RootState) => state.userReducer.btnFlag,
 };

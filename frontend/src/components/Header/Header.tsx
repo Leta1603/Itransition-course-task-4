@@ -2,16 +2,17 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 
 import styles from "./Header.module.scss";
-import { useDispatch } from "react-redux";
-import { setUser } from "../../redux/reducers/userSlice.ts";
+import {useDispatch, useSelector} from "react-redux";
+import {setUser, UserSelectors} from "../../redux/reducers/userSlice.ts";
 import { RoutesList } from "../../pages/Router.tsx";
-import { useUserInfo, useIsLoggedIn } from "../../hooks";
+import { useUserInfo } from "../../hooks";
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userInfo = useUserInfo().getUserInfo();
-  const isLoggedIn = useIsLoggedIn().isLoggedIn();
+  const isLoggedIn = useSelector(UserSelectors.getUserIsLoggedIn);
+
 
   const onBtnClick = () => {
     localStorage.setItem("userInfo", JSON.stringify(null));

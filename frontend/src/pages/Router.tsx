@@ -1,11 +1,12 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 // @ts-ignore
 import { ToastContainer } from "react-toastify";
 import SignUp from "./SignUp/SignUp.tsx";
 import Header from "../components/Header/Header.tsx";
 import SignIn from "./SignIn/SignIn.tsx";
 import Home from "./Home/Home.tsx";
-import { UserInfoResponse } from "../redux/@type.ts";
+import { useSelector } from "react-redux";
+import { UserSelectors } from "../redux/reducers/userSlice.ts";
 
 export enum RoutesList {
   Home = "/",
@@ -15,9 +16,7 @@ export enum RoutesList {
 }
 
 const Router = () => {
-  const storedData = localStorage.getItem("userInfo");
-  const userInfo: UserInfoResponse = storedData && JSON.parse(storedData);
-  const isLoggedIn = !!userInfo;
+  const isLoggedIn = useSelector(UserSelectors.getUserIsLoggedIn);
 
   return (
     <>
@@ -26,10 +25,26 @@ const Router = () => {
           <Route path={RoutesList.Home} element={<Header />}>
             <Route
               path={RoutesList.Home}
-              element={isLoggedIn ? <Home /> : <SignIn />}
+              element={
+                isLoggedIn ? <Home /> : <Navigate to={RoutesList.SignIn} />
+              }
             />
-            <Route path={RoutesList.SignUp} element={<SignUp />} />
-            <Route path={RoutesList.SignIn} element={<SignIn />} />
+            <Route
+              path={RoutesList.SignUp}
+              element={
+                isLoggedIn ? <Navigate to={RoutesList.Home} /> : <SignUp />
+              }
+            />
+            <Route
+              path={RoutesList.SignIn}
+              element={
+                isLoggedIn ? <Navigate to={RoutesList.Home} /> : <SignIn />
+              }
+            />
+            <Route
+              path={RoutesList.Default}
+              element={<Navigate to={RoutesList.Home} />}
+            />
           </Route>
         </Routes>
       </BrowserRouter>

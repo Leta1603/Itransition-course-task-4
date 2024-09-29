@@ -34,9 +34,7 @@ const SignIn = () => {
     dispatch(
       signInUser({
         data,
-        callback: () => {
-          navigate(RoutesList.Home);
-        },
+        callback: () => navigate(RoutesList.Home),
       }),
     );
   };
