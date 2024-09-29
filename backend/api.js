@@ -2,7 +2,6 @@ import express from "express";
 import mysql from "mysql";
 import cors from "cors";
 import crypto from "crypto";
-import serverless from "serverless-http";
 
 const api = express();
 
@@ -54,8 +53,17 @@ api.use(cors());
 
 api.use(express.json());
 
-// api.listen(PORT, (err) => {
-//   err ? console.log(err) : console.log(`Listening port ${PORT}`);
+api.listen(PORT, (err) => {
+  err ? console.log(err) : console.log(`Listening port ${PORT}`);
+});
+
+// Проверка подключения к базе данных
+// db.connect((err) => {
+//   if (err) {
+//     console.error("Ошибка подключения к базе данных:", err);
+//   } else {
+//     console.log("Подключено к базе данных MySQL");
+//   }
 // });
 
 api.get("/users", (req, res) => {
@@ -172,5 +180,3 @@ api.delete("/users", (req, res) => {
       .json({ message: "Users deleted", affectedRows: result.affectedRows });
   });
 });
-
-export const handler = serverless(api);
